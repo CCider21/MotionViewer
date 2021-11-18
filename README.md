@@ -8,8 +8,8 @@
 4) 간단한 mass-spring 모델을 시뮬레이션 해볼 수 있다.
 
 
-## 화면
+## UI
 
-
+![image](https://user-images.githubusercontent.com/67242042/142366104-50b4a84a-3056-4393-b5cd-c6d007ddb468.png)
 
 실행 영상: https://youtu.be/DyfueA5H0Cc
