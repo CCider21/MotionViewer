@@ -113,8 +113,6 @@ def motionStitching(motion1, motion2, frameNum):
 	newMotion = copy.deepcopy(motion1)
 
 	diffPos = postureDiff(motion2.postures[0], motion1.postures[motion1.frames-1])
-	rootname = diffPos.skeleton.root.name
-	diffOri = math.newRootOrientation(diffPos.rotationMatrix[rootname])
 	offset = np.arange(1,0,-1/frameNum)
 
 	for i in range(len(offset)):
@@ -128,16 +126,19 @@ def motionStitching(motion1, motion2, frameNum):
 		newMotion.frames += 1
 
 	#root align
-	root_0 = motion2.postures[0].rootPosition
+	rootname = diffPos.skeleton.root.name
+	diffOri = math.newRootOrientation(diffPos.rotationMatrix[rootname])
+	
+	m2_startRoot = motion2.postures[0].rootPosition
 	m1_endRoot = motion1.postures[motion1.frames-1].rootPosition
 	for i in range(motion2.frames):
-		root_i = motion2.postures[i].rootPosition
-		pos = newMotion.postures[i+motion1.frames]
+		originalPos = motion2.postures[i]
+		newPos = newMotion.postures[i+motion1.frames]
 
-		alignRootPosition = (diffOri@(root_i-root_0) + m1_endRoot)[:3,3]
-		alignRootPosition[1] = pos.rootPosition[1,3]
-		pos.rootPosition[:3,3] = alignRootPosition
-		pos.rotationMatrix[rootname] = diffOri @ motion2.postures[i].rotationMatrix[rootname]
+		alignRootPosition = (diffOri @ (originalPos.rootPosition-m2_startRoot) + m1_endRoot)[:3,3]
+		alignRootPosition[1] = newPos.rootPosition[1,3]
+		newPos.rootPosition[:3,3] = alignRootPosition
+		newPos.rotationMatrix[rootname] = diffOri @ originalPos.rotationMatrix[rootname]
 
 	return newMotion
 
