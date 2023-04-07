@@ -128,17 +128,15 @@ def motionStitching(motion1, motion2, frameNum):
 		newMotion.frames += 1
 
 	#root align
+	root_0 = motion2.postures[0].rootPosition
+	m1_endRoot = motion1.postures[motion1.frames-1].rootPosition
 	for i in range(motion2.frames):
 		root_i = motion2.postures[i].rootPosition
-		root_0 = motion2.postures[0].rootPosition
-		m1_endRoot = motion1.postures[motion1.frames-1].rootPosition
 		pos = newMotion.postures[i+motion1.frames]
 
-		pos.transMatrix = copy.copy(motion1.postures[0].transMatrix)
-
-		tmp = (diffOri@(root_i-root_0) + m1_endRoot)[:3,3]
-		tmp[1] = pos.rootPosition[1,3]
-		pos.rootPosition[:3,3] = tmp
+		alignRootPosition = (diffOri@(root_i-root_0) + m1_endRoot)[:3,3]
+		alignRootPosition[1] = pos.rootPosition[1,3]
+		pos.rootPosition[:3,3] = alignRootPosition
 		pos.rotationMatrix[rootname] = diffOri @ motion2.postures[i].rotationMatrix[rootname]
 
 	return newMotion
