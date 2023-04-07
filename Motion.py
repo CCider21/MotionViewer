@@ -91,23 +91,22 @@ def timeWarping(motion, func, k=1):
 
 	return newMotion
 
-def motionWarping(motion, posture, frame, start, end):
+def motionWarping(motion, offsetPosture, offsetFrame, startFrame, endFrame):
 	newMotion = Motion()
 	newMotion = copy.deepcopy(motion)
 
-	diffPos = postureDiff(motion.postures[frame], posture)
+	diffPos = postureDiff(motion.postures[offsetFrame], offsetPosture)
 
-	if frame == start:
-		offset = list(np.arange(1,0,-1/(end-frame)))
-	elif frame == end:
-		offset = list(np.arange(0,1,1/(frame-start)))
+	if frame == startFrame:
+		offset = list(np.arange(1,0,-1/(endFrame-offsetFrame)))
+	elif frame == endFrame:
+		offset = list(np.arange(0,1,1/(offsetFrame-startFrame)))
 	else:
-		offset = list(np.arange(0,1,1/(frame-start))) + list(np.arange(1,0,-1/(end-frame)))
+		offset = list(np.arange(0,1,1/(offsetFrame-startFrame))) + list(np.arange(1,0,-1/(endFrame-offsetFrame)))
 	
 	for i in range(len(offset)):
-		newPos = postureAdd(motion.postures[start+i], postureScale(diffPos,offset[i]))
-		newMotion.postures[start+i] = newPos
-
+		newPos = postureAdd(motion.postures[startFrame+i], postureScale(diffPos,offset[i]))
+		newMotion.postures[startFrame+i] = newPos
 	return newMotion
 
 def motionStitching(motion1, motion2, frameNum):
