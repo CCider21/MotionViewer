@@ -125,7 +125,7 @@ def motionStitching(motion1, motion2, frameNum):
 		newMotion.postures.append(pos_i)
 		newMotion.frames += 1
 
-	#root align
+	#root alignment
 	rootname = diffPos.skeleton.root.name
 	diffOri = math.newRootOrientation(diffPos.rotationMatrix[rootname])
 	
@@ -155,19 +155,16 @@ def motionBlending(motion1, motion2, func=linearFunc):
 	for i in range(m2.frames):
 		m2.postures[i].rootPosition += diffPos.rootPosition
 
-
 	for i in range(newMotion.frames):
 		s = 0.5*np.cos(np.pi/(newMotion.frames)*i)+0.5
 		m1_pos = m1.postures[i]
 		m2_pos = m2.postures[i]
 		newPos = m2_pos.interpolation(m1_pos, s)
-
 		newMotion.postures.append(newPos)
 
 	del m1
 	del m2
 	blendMotion = timeWarping(newMotion, func)
-
 	return blendMotion
 
 def motionAdd(motion1, motion2):
