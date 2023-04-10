@@ -12,4 +12,5 @@
 
 ![image](https://user-images.githubusercontent.com/67242042/142366104-50b4a84a-3056-4393-b5cd-c6d007ddb468.png)
 
-실행 영상: https://youtu.be/DyfueA5H0Cc
+실행 영상: https://youtu.be/kUPPrynSo7M
+
