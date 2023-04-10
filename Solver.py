@@ -7,11 +7,11 @@ def computeForce(sys):
 	for i in range(len(sys.particles)):
 		p = sys.particles[i]
 		force = np.zeros(3)
-
+		
+		#Gravity Force
 		force[1] += p.m * G
-
 		force -= kd * np.array(p.v)
-
+		
 		#Dumped Spring Force
 		for j in sys.linked[i]:
 			adj = sys.particles[j]
@@ -61,9 +61,9 @@ def eulerStep(sys, h):
 def collisionDetection(sys, detect):
 	P = np.array([0,0,0])
 	N = np.array([0,1,0])
-
 	w = 0.1
 	flag = False
+	
 	for i in range(len(sys.particles)):
 		p = sys.particles[i]
 		xdotn = np.dot(p.pos-P, N.T)
@@ -76,8 +76,8 @@ def collisionDetection(sys, detect):
 def collisionResponse(sys, detect):
 	P = np.array([0,0,0])
 	N = np.array([0,1,0])
-
 	kr = 0.1
+	
 	for i in detect:
 		p = sys.particles[i]
 		Vn = np.array([0,p.v[1], 0])
